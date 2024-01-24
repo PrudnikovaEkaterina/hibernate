@@ -1,3 +1,5 @@
+package entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "city", schema = "world")
+@Table(name = "city")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,6 @@ public class City {
     @Column(name = "District")
     private String district;
 
-    @Column(name = "Population")
-    private Long population;
+//    @Column(name = "Population")
+//    private Long population;
 }
