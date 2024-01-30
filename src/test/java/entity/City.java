@@ -3,6 +3,7 @@ package entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -23,8 +24,11 @@ public class City {
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "CountryCode")
-    private String countryCode;
+    @ManyToOne (cascade = CascadeType.ALL, optional = false)//много городов могут иметь одинаковый код страны
+//    по умолчанию соединяет таблицы при помощи left join
+//    если нужен inner join, то необходимо в @ManyToOne (cascade = CascadeType.ALL) добавить optional = false
+    @JoinColumn(name = "country_code_id")
+    private CountryCode countryCode;
 
     @Embedded
     private CityGeo cityGeo;

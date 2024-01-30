@@ -1,4 +1,5 @@
 import entity.*;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,16 +14,23 @@ public class Test1 {
 
     @Test
     void test1() {
+        City cityPrint = new City();
+//        вместо try с ресурсами можно использовать аннтотацию ломбок @Cleanup
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
 
-        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
+//        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+//             Session session = sessionFactory.openSession()) {}
 
             Transaction transaction = session.beginTransaction();
-//            session.beginTransaction();
+
+            CountryCode countryCode = CountryCode.builder()
+                    .countryCode("RU")
+                    .build();
 
             City city = City.builder()
-                    .name("Ukraine")
-                    .countryCode("PSE")
+                    .name("Moldova")
+                    .countryCode(countryCode)
                     .cityGeo(CityGeo
                             .builder()
                             .district("New")
@@ -40,14 +48,17 @@ public class Test1 {
                             .build())
                     .build();
 
-//            session.persist(city); // добавить запись в таблицу
-//            session.merge(city);  // обновить
-//            session.remove(city); // удалить
+//      session.persist(countryCode);
+//      session.persist(city); // добавить запись в таблицу
 
-            City cityGet = session.get(City.class, 30); // получить из базы по id
-            System.out.println(cityGet);
+//      session.merge(city);  // обновить
+//      session.remove(city); // удалить
+
+//            cityPrint = session.get(City.class, 1); // получить из базы по id
 
             transaction.commit();
+
+            System.out.println(cityPrint);
 
 //            session.getTransaction().commit();
 
@@ -57,8 +68,10 @@ public class Test1 {
 
 //            System.out.println(result.getName());
 //            session.getTransaction().commit();
-        }
+
     }
+
+
 
 //    @Test
 //    void test2() {
