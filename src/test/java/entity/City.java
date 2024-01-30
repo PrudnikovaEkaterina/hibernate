@@ -2,17 +2,19 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "city")
+@Table(name = "city1")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +26,14 @@ public class City {
     @Column(name = "CountryCode")
     private String countryCode;
 
-    @Column(name = "District")
-    private String district;
+    @Embedded
+    private CityGeo cityGeo;
 
-//    @Column(name = "Population")
-//    private Long population;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(name = "data_json")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private DataJson dataJson;
+
 }
