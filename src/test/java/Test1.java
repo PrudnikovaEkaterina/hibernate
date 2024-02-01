@@ -24,41 +24,46 @@ public class Test1 {
 
             Transaction transaction = session.beginTransaction();
 
-            CountryCode countryCode = CountryCode.builder()
-                    .countryCode("RU")
-                    .build();
+//            CountryCode countryCode = CountryCode.builder()
+//                    .countryCode("RU")
+//                    .build();
+        var countryCode = session.get(CountryCode.class, 1);
 
             City city = City.builder()
-                    .name("Moldova")
+                    .name("Belarus")
                     .countryCode(countryCode)
                     .cityGeo(CityGeo
                             .builder()
-                            .district("New")
-                            .population(50)
+                            .district("Bel")
+                            .population(30)
                             .build())
-                    .role(Role.ADMIN)
+                    .role(Role.USER)
                     .dataJson(DataJson
                             .builder()
                             .id(1)
                             .title(Title
                                     .builder()
-                                    .titleFull("aaaaaa")
+                                    .titleFull("qqqq")
                                     .build())
                             .garRegion("0c5b2444-70a0-4932-980c-b4dc0d3f02b5")
                             .build())
                     .build();
 
-//      session.persist(countryCode);
-//      session.persist(city); // добавить запись в таблицу
+//     session.persist(countryCode);
+//     session.persist(city); // добавить запись в таблицу
 
 //      session.merge(city);  // обновить
 //      session.remove(city); // удалить
 
-//            cityPrint = session.get(City.class, 1); // получить из базы по id
+//      cityPrint = session.get(City.class, 1); // получить из базы по id
+//       System.out.println(cityPrint);
+
+        var countryCode1 = session.get(CountryCode.class, 1);
+        System.out.println(countryCode1.getCityList());
 
             transaction.commit();
 
-            System.out.println(cityPrint);
+
 
 //            session.getTransaction().commit();
 

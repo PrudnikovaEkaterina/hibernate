@@ -15,6 +15,8 @@ import org.hibernate.type.SqlTypes;
 @AllArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(of = "name") // считать хеш код только по полю name или можно исключать поля на основе других entity,
+// типо private CountryCode countryCode, так в нем для расчета хеша нужен хеш поля  private List<City> cityList приводит к ошибке переполнения
 @Table(name = "city1")
 public class City {
     @Id

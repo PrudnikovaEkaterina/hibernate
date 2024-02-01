@@ -9,11 +9,12 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = "cityList")
+@EqualsAndHashCode(exclude = "cityList")
 @Table(name = "country_code")
 public class CountryCode {
     @Id
