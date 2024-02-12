@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.junit.jupiter.api.Test;
 import util.HibernateUtil;
 
+import java.util.List;
+
 
 @Slf4j
 public class Test1 {
@@ -30,11 +32,11 @@ public class Test1 {
         var countryCode = session.get(CountryCode.class, 1);
 
             City city = City.builder()
-                    .name("Belarus")
+                    .name("Ukraine")
                     .countryCode(countryCode)
                     .cityGeo(CityGeo
                             .builder()
-                            .district("Bel")
+                            .district("Ukr")
                             .population(30)
                             .build())
                     .role(Role.USER)
@@ -43,7 +45,7 @@ public class Test1 {
                             .id(1)
                             .title(Title
                                     .builder()
-                                    .titleFull("qqqq")
+                                    .titleFull("lll")
                                     .build())
                             .garRegion("0c5b2444-70a0-4932-980c-b4dc0d3f02b5")
                             .build())
@@ -58,10 +60,23 @@ public class Test1 {
 //      cityPrint = session.get(City.class, 1); // получить из базы по id
 //       System.out.println(cityPrint);
 
-        var countryCode1 = session.get(CountryCode.class, 1);
-        System.out.println(countryCode1.getCityList());
+//        var countryCode1 = session.get(CountryCode.class, 1);
+//        System.out.println(countryCode1.getCityList());
 
-            transaction.commit();
+//        List<City> cityList = session.createQuery("from City c", City.class).list();
+//
+//        System.out.println(cityList);
+
+//        City result = session.createQuery("from City c where c.name = ?1", City.class).setParameter(1, "Ukraine").getSingleResult();
+  //      вместо  c.name = ?1 .setParameter(1, "Ukraine") можно писать так  - c.name = :name .setParameter("name", "Ukraine")
+//        City result = session.createQuery("from City c where c.name = :name", City.class).setParameter("name", "Ukraine").getSingleResult();
+//        System.out.println(result.getDataJson().getGarRegion());
+
+       DataJson json = session.createQuery("select c.dataJson from City c where c.name = :name ", DataJson.class).setParameter("name", "Belarus").getSingleResult();
+        System.out.println(json);
+
+
+        transaction.commit();
 
 
 
