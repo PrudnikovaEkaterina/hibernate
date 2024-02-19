@@ -22,7 +22,7 @@ public class CountryCode {
     private Long id;
 
     @Column(name = "country_code")
-    private String countryCode;
+    private String name;
 
     @OneToMany (mappedBy = "countryCode") // 1 код страны может принадлежать многим городам
     private List<City> cityList;

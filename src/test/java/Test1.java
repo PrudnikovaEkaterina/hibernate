@@ -1,4 +1,10 @@
+
+import com.querydsl.jpa.impl.JPAQuery;
 import entity.*;
+import entity.QCity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -24,32 +30,32 @@ public class Test1 {
 //        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 //             Session session = sessionFactory.openSession()) {}
 
-            Transaction transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
 
 //            CountryCode countryCode = CountryCode.builder()
 //                    .countryCode("RU")
 //                    .build();
-        var countryCode = session.get(CountryCode.class, 1);
-
-            City city = City.builder()
-                    .name("Ukraine")
-                    .countryCode(countryCode)
-                    .cityGeo(CityGeo
-                            .builder()
-                            .district("Ukr")
-                            .population(30)
-                            .build())
-                    .role(Role.USER)
-                    .dataJson(DataJson
-                            .builder()
-                            .id(1)
-                            .title(Title
-                                    .builder()
-                                    .titleFull("lll")
-                                    .build())
-                            .garRegion("0c5b2444-70a0-4932-980c-b4dc0d3f02b5")
-                            .build())
-                    .build();
+//        var countryCode = session.get(CountryCode.class, 1);
+//
+//            City city = City.builder()
+//                    .name("Ukraine")
+//                    .countryCode(countryCode)
+//                    .cityGeo(CityGeo
+//                            .builder()
+//                            .district("Ukr")
+//                            .population(30)
+//                            .build())
+//                    .role(Role.USER)
+//                    .dataJson(DataJson
+//                            .builder()
+//                            .id(1)
+//                            .title(Title
+//                                    .builder()
+//                                    .titleFull("lll")
+//                                    .build())
+//                            .garRegion("0c5b2444-70a0-4932-980c-b4dc0d3f02b5")
+//                            .build())
+//                    .build();
 
 //     session.persist(countryCode);
 //     session.persist(city); // добавить запись в таблицу
@@ -68,16 +74,26 @@ public class Test1 {
 //        System.out.println(cityList);
 
 //        City result = session.createQuery("from City c where c.name = ?1", City.class).setParameter(1, "Ukraine").getSingleResult();
-  //      вместо  c.name = ?1 .setParameter(1, "Ukraine") можно писать так  - c.name = :name .setParameter("name", "Ukraine")
+        //      вместо  c.name = ?1 .setParameter(1, "Ukraine") можно писать так  - c.name = :name .setParameter("name", "Ukraine")
 //        City result = session.createQuery("from City c where c.name = :name", City.class).setParameter("name", "Ukraine").getSingleResult();
 //        System.out.println(result.getDataJson().getGarRegion());
 
-       DataJson json = session.createQuery("select c.dataJson from City c where c.name = :name ", DataJson.class).setParameter("name", "Belarus").getSingleResult();
-        System.out.println(json);
+//       DataJson json = session.createQuery("select c.dataJson from City c where c.name = :name ", DataJson.class).setParameter("name", "Belarus").getSingleResult();
+//        System.out.println(json);
+
+//        List<City> cityList = new JPAQuery<City>(session).select(QCity.city).from(QCity.city).fetch();
+        List<DataJson> dataJsons = new JPAQuery<DataJson>(session).select(QCity.city.dataJson)
+                .from(QCity.city)
+                .where(QCity.city.countryCode.name.like("kk"))
+                .fetch();
+//        List<DataJson> dataJsons =  session.createQuery("select c.dataJson from City c where countryCode.name like '%Tu%'", DataJson.class).list();
+
+                System.out.println(dataJsons);
+
+
 
 
         transaction.commit();
-
 
 
 //            session.getTransaction().commit();
@@ -85,12 +101,10 @@ public class Test1 {
 //            Query<City> query = session.createQuery("from City where id = 1", City.class);
 
 
-
 //            System.out.println(result.getName());
 //            session.getTransaction().commit();
 
     }
-
 
 
 //    @Test
